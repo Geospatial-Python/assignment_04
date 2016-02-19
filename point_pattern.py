@@ -33,7 +33,8 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file, 'r') as fp:
+        gj = json.load(fp)
     return gj
 
 
@@ -58,6 +59,11 @@ def find_largest_city(gj):
     """
     city = None
     max_population = 0
+    for item in gj["features"]:
+        props = item["properties"]
+        if (props["pop_max"] > max_population):
+            max_population = props["pop_max"]
+            city = props["adm1name"]
 
     return city, max_population
 
@@ -74,7 +80,15 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    # Finds the city with the greatest change in population (i.e. between pop_max and pop-min.
+    city = None
+    greatest_change = 0
+    for item in gj["features"]:
+        props = item["properties"]
+        if props["pop_max"] - props["pop_min"] > greatest_change:
+            greatest_change = props["pop_max"] - props["pop_min"]
+            city = props["adm1name"]
+    return city, greatest_change
 
 def mean_center(points):
     """
@@ -93,8 +107,16 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    x = 0
+    y = 0
+    n = 0
+    for point in points:
+        x += point[0]
+        y += point[1]
+        n += 1
+
+    x /= n
+    y /= n
 
     return x, y
 
@@ -120,6 +142,28 @@ def average_nearest_neighbor_distance(points):
      p. 445-453.
     """
     mean_d = 0
+    temp_nearest_neighbor = None
+    # Average the nearest neighbor distance of all points.
+    for point in points:
+        # Find the nearest neighbor to this point.
+        for otherPoint in points:
+            # You are not your own neighbor.
+            if check_coincident(point, otherPoint):
+                continue
+            # To avoid multiple calculations, we'll cache the result.
+            current_distance = euclidean_distance(point, otherPoint)
+            # nearest neighbor will be None if this is the first neighbor we have iterated over.
+            if temp_nearest_neighbor is None:
+                temp_nearest_neighbor = current_distance
+            elif temp_nearest_neighbor > current_distance:
+                temp_nearest_neighbor = current_distance
+        # At this point, we've found point's nearest neighbor distance.
+        # Add in that distance.
+        mean_d += temp_nearest_neighbor
+        temp_nearest_neighbor = None
+
+    # Divide by number of points.
+    mean_d /= len(points)
 
     return mean_d
 
