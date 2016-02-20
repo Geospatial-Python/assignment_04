@@ -183,7 +183,25 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    mbr = [0,0,0,0]
+    mbr = [None,None,None,None]
+    for point in points:
+        # First iteration, everything is None. The point will
+        # form the initial boundaries for the rectangle.
+        if mbr[0] is None:
+            mbr[0] = point[0]
+            mbr[1] = point[1]
+            mbr[2] = point[0]
+            mbr[3] = point[1]
+        else:
+            # Verify that each edge is far enough. If not, extend the rectangle.
+            if point[0] < mbr[0]:
+                mbr[0] = point[0]
+            if point[1] < mbr[1]:
+                mbr[1] = point[1]
+            if point[0] > mbr[2]:
+                mbr[2] = point[0]
+            if point[1] > mbr[3]:
+                mbr[3] = point[1]
 
     return mbr
 
@@ -192,7 +210,7 @@ def mbr_area(mbr):
     """
     Compute the area of a minimum bounding rectangle
     """
-    area = 0
+    area = (mbr[3] - mbr[1]) * (mbr[2] - mbr[0])
 
     return area
 
@@ -217,7 +235,7 @@ def expected_distance(area, n):
         The number of points
     """
 
-    expected = 0
+    expected = 0.5 * ((area / n) ** 0.5)
     return expected
 
 
