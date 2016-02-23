@@ -16,7 +16,7 @@ class TestFilesAndDicts(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.gj = point_pattern.read_geojson('/data/us_cities.geojson')
+        cls.gj = point_pattern.read_geojson('../data/us_cities.geojson')
 
     def test_read_geojson(self):
         self.assertIsInstance(self.gj, dict)
