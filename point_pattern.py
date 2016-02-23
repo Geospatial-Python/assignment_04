@@ -130,8 +130,27 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
+    sum_nn_dis = 0
+    
+    for point_1 in points:
+        first = True
+        for point_2 in points:
+            if point_1 == point_2:
+                continue
+            else:
+                distance = euclidean_distance(point_1, point_2)
+                if first:
+                    distance = nn_dis
+                    first = False
+                elif distance < nn_dis:
+                    distance = nn_dis
+                        
+        sum_nn_dis += nn_dis
+                    
+            
+
   
-    mean_d = 0
+    mean_d = sum_nn_dis / len(points)
 
     return mean_d
 
