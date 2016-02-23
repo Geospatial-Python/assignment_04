@@ -32,7 +32,8 @@ def read_geojson(input_file):
     # to solve this one.
     with open ('data/us_cities.geojson', 'r') as f:
         gj = json.load(f)
-
+    gj = ['features']    
+    print (gj[feature[10]['type']['pop_max']
     return gj
 
 
@@ -52,6 +53,7 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
+    
     temp = 0
     for i in gj:
        if i['pop_max'] > temp:
