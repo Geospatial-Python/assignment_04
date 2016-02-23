@@ -60,11 +60,7 @@ def find_largest_city(gj):
     """
     city = None
     max_population = 0
-    for place in gj["features"]:
-        thisCity = place["properties"]["pop_max"]
-        if thisCity > max_population:
-            max_population = thisCity
-            city = place["properties"]
+    
 
 
     return city, max_population
