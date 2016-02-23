@@ -34,7 +34,7 @@ def read_geojson(input_file):
         gj = json.load(f)
     gj = ['features']    
     print (gj[feature[10]['type']['pop_max']
-    return gj
+    #return gj
 
 
 def find_largest_city(gj):
