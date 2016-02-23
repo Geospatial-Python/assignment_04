@@ -33,8 +33,7 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    with open(input_file, 'r') as f:
-        gj = json.load(f)
+
     gj = None
     return gj
 
@@ -60,7 +59,7 @@ def find_largest_city(gj):
     """
     city = None
     max_population = 0
-    
+
 
 
     return city, max_population
