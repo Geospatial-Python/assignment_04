@@ -17,7 +17,7 @@ class TestFilesAndDicts(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.gj = point_pattern.read_geojson('data/us_cities.geojson')
+        cls.gj = point_pattern.read_geojson('/data/us_cities.geojson')
 
     def test_read_geojson(self):
         self.assertIsInstance(self.gj, dict)
@@ -32,8 +32,14 @@ class TestFilesAndDicts(unittest.TestCase):
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        #some_return = point_pattern.write_your_own(self.gj)
+        features = self.gj["features"]
+        minn = min(feature["properties"]["pop_min"] for feature in self.gj["features"]) #gets the minimum population as a check
+        city,pop = point_pattern.write_your_own(self.gj)
+
+        self.assertEqual(minn,pop)
+        self.assertEqual(city,"Montana")
+
 
 class TestIterablePointPattern(unittest.TestCase):
     """
