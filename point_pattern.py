@@ -32,9 +32,8 @@ def read_geojson(input_file):
     # to solve this one.
     with open ('data/us_cities.geojson', 'r') as f:
         gj = json.load(f)
-    gj = ['features']    
-    print (gj[feature[10]['type']['pop_max']
-    #return gj
+    
+    return gj
 
 
 def find_largest_city(gj):
@@ -56,9 +55,9 @@ def find_largest_city(gj):
     
     temp = 0
     for i in gj:
-       if i['pop_max'] > temp:
-            temp = i['pop_max']
-            city = i['city']
+       if i['properties']['pop_max'] > temp:
+            temp = i['properties']['pop_max']
+            city = i['properties']['name']
             max_population = temp
 
     return city, max_population
@@ -127,9 +126,12 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
+    nn_distance = []
+    
+    for i in points:
+        
 
-
-    mean_d = mean_center(points) / len(points)
+    mean_d = sum(nn_distance) / len(points)
 
     return mean_d
 
@@ -147,12 +149,7 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    xmin = min(points[0])
-    ymin = min(points[1])
-    xmax = max(points[0])
-    ymax = max(points[1])
 
-    mbr = [xmin,ymin,xmax,ymax]
 
     return mbr
 
