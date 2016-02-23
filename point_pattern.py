@@ -54,7 +54,7 @@ def find_largest_city(gj):
     """
     
     temp = 0
-    for i in gj:
+    for i in gj['features']:
        if i['properties']['pop_max'] > temp:
             temp = i['properties']['pop_max']
             city = i['properties']['name']
@@ -74,10 +74,10 @@ def write_your_own(gj):
     tests.py!
     """
     temp = 0
-    for i in gj:
-        if i['pop_min'] < temp:
-            temp = i['pop_min']
-            city = i['city']
+    for i in gj['features']:
+        if i['properties']['pop_min'] < temp:
+            temp = i['properties']['pop_min']
+            city = i['properties']['name']
             min_population = temp
 
     return city, min_population
@@ -126,12 +126,8 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
-    nn_distance = []
-    
-    for i in points:
-        
-
-    mean_d = sum(nn_distance) / len(points)
+  
+    mean_d = 0
 
     return mean_d
 
