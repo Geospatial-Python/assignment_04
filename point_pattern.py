@@ -75,7 +75,7 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    temp = 0
+    temp = 99999999999
     city = ""
     min_population = 0
     for i in gj['features']:
