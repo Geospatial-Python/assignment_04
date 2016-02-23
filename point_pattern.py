@@ -150,7 +150,22 @@ def minimum_bounding_rectangle(points):
     """
 
     mbr = [0,0,0,0]
-
+    xmin = 999
+    ymin = 999
+    xmax = 0
+    ymax = 0
+    for i in points:
+        if i[0] < xmin:
+            xmin = i[0]
+        if i[0] > xmax:
+            xmax = i[0]
+        if i[1] < ymin:
+            ymin = i[1]
+        if i[1] > ymax:
+            ymax = i[1]
+        
+    mbr = [xmin, ymin, xmax, ymax]
+    
     return mbr
 
 
