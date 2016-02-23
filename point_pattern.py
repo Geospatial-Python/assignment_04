@@ -135,21 +135,7 @@ def average_nearest_neighbor_distance(points):
     """
 
     mean_d = 0
-    neighbor = None
-    for point in points:
-        if:
-            point_a != point_b
-            thisDistance = euclidean_distance(point_a, point_b)
-            if:
-                neighbor = None
-                neighbor = thisDistance
-                    
-        else:
-            neighbor > thisDistance
-                neighbor = thisDistance
-        mean_d += neighbor
-        neighbor = None
-        mean_d/=len(points)
+   
 
     return mean_d
 
