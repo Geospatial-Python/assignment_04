@@ -32,8 +32,8 @@ class TestFilesAndDicts(unittest.TestCase):
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        worldCities = point_pattern.write_your_own(self.gj)
+        self.assertEqual(worldCities, 8)
 
 class TestIterablePointPattern(unittest.TestCase):
     """
