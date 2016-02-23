@@ -54,6 +54,7 @@ def find_largest_city(gj):
     """
     
     temp = 0
+    city = ""
     for i in gj['features']:
        if i['properties']['pop_max'] > temp:
             temp = i['properties']['pop_max']
@@ -74,6 +75,7 @@ def write_your_own(gj):
     tests.py!
     """
     temp = 0
+    city = ""
     for i in gj['features']:
         if i['properties']['pop_min'] < temp:
             temp = i['properties']['pop_min']
