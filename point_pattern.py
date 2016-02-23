@@ -55,6 +55,7 @@ def find_largest_city(gj):
     
     temp = 0
     city = ""
+    max_population = 0
     for i in gj['features']:
        if i['properties']['pop_max'] > temp:
             temp = i['properties']['pop_max']
@@ -76,6 +77,7 @@ def write_your_own(gj):
     """
     temp = 0
     city = ""
+    min_population = 0
     for i in gj['features']:
         if i['properties']['pop_min'] < temp:
             temp = i['properties']['pop_min']
@@ -147,7 +149,7 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-
+    mbr = [0,0,0,0]
 
     return mbr
 
