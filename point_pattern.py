@@ -140,10 +140,10 @@ def average_nearest_neighbor_distance(points):
             else:
                 distance = euclidean_distance(point_1, point_2)
                 if first:
-                    distance = nn_dis
+                     nn_dis = distance
                     first = False
                 elif distance < nn_dis:
-                    distance = nn_dis
+                     nn_dis = distance
                         
         sum_nn_dis += nn_dis
                     
