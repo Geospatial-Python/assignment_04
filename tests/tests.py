@@ -4,8 +4,7 @@ import sys
 import unittest
 
 sys.path.append(os.path.abspath('..'))
-#from ..
-import point_pattern
+from .. import point_pattern
 
 
 class TestFilesAndDicts(unittest.TestCase):
