@@ -114,7 +114,7 @@ def mean_center(points):
     y = 0
     xx = 0
     yy = 0
-    
+
     for i in points:
         xx += i[0]
         yy += i[1]
@@ -175,22 +175,21 @@ def minimum_bounding_rectangle(points):
     """
 
     mbr = [0, 0, 0, 0]
-    xmin = 0
-    xmax = 0
-    ymin = 0
-    ymax = 0
+    x_min = 0
+    x_max = 0
+    y_min = 0
+    y_max = 0
 
     for p in points:
-        if p[0] < xmin:
-            xmin = p[0]
-        if p[0] > xmax:
-            xmax = p[0]
-        if p[1] < ymin:
-            ymin = p[1]
-        if p[1] > ymax:
-            ymax = p[1]
-
-    mbr = [xmin, xmax, ymin, ymax]
+        if p[0] < x_min:
+            x_min = p[0]
+        if p[0] > x_max:
+            x_max = p[0]
+        if p[1] < y_min:
+            y_min = p[1]
+        if p[1] > y_max:
+            y_max = p[1]
+        mbr = [x_min, x_max, y_min, y_max]
 
     return mbr
 
