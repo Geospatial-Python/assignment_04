@@ -15,12 +15,14 @@ to write functions to:
 7. Compute the area of a MBR
 8. Compute the expected mean distance for a given point pattern
 """
+from pyexpat import features
+from math import sqrt
 
 
 def read_geojson(input_file):
     """
     Read a geojson file
-
+    
     Parameters
     ----------
     input_file : str
@@ -31,9 +33,13 @@ def read_geojson(input_file):
     gj : dict
          An in memory version of the geojson
     """
+    
+    with open(input_file, 'r') as f:
+        gj=json.load(f)
+    
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+
     return gj
 
 
@@ -56,10 +62,14 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
-    max_population = 0
-
-    return city, max_population
+    maximum=0;
+    features=gj['features']
+    
+    for i in features:
+        if (i['properties']['pop_max']>maximum):
+            maximum=i['properties']['pop_max']
+            city=i['properties']['nameascii']
+    return city, maximum
 
 
 def write_your_own(gj):
@@ -74,7 +84,14 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    #Calculate the number of citues with two-word names
+    features=gj['features']
+    count = 0
+    for i in features:
+        if(' ' in i['properties']['name']):
+            count= count+1   
+    
+    return count
 
 def mean_center(points):
     """
@@ -93,8 +110,15 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    x_tot=0
+    y_tot=0
+    
+    for i in points:
+        x_tot+=i[0]
+        y_tot+=i[1]
+        
+    x = x_tot/len(points)
+    y = y_tot/len(points)
 
     return x, y
 
@@ -120,7 +144,16 @@ def average_nearest_neighbor_distance(points):
      p. 445-453.
     """
     mean_d = 0
-
+    for i in points:
+        dist_nearest=1e9
+        for j in points:
+            dist = euclidean_distance(i, j)
+            if i==j:
+                continue
+            elif dist < dist_nearest:
+                dist_nearest = dist;
+        mean_d += dist_nearest;
+    mean_d=mean_d/(len(points))
     return mean_d
 
 
@@ -138,8 +171,25 @@ def minimum_bounding_rectangle(points):
      : list
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
-
-    mbr = [0,0,0,0]
+    #set initial params
+    xmin=points[1][0]
+    ymin=points[1][1]
+    xmax=points[1][0]
+    ymax=points[1][1]
+    
+    for i in points:
+        curr_x=i[0]
+        curr_y=i[1]
+        if curr_x < xmin:
+            xmin= curr_x 
+        elif curr_x > xmax:
+            xmax= curr_x
+                
+        if curr_y < ymin:
+            ymin= curr_y 
+        elif curr_y > ymax:
+            ymax= curr_y 
+    mbr = [xmin,ymin,xmax,ymax]
 
     return mbr
 
@@ -148,9 +198,7 @@ def mbr_area(mbr):
     """
     Compute the area of a minimum bounding rectangle
     """
-    area = 0
-
-    return area
+    return (mbr[3]-mbr[1])*(mbr[2]-mbr[0])
 
 
 def expected_distance(area, n):
@@ -172,9 +220,8 @@ def expected_distance(area, n):
     n : int
         The number of points
     """
-
-    expected = 0
-    return expected
+    
+    return 0.5*(sqrt(area/n))
 
 
 """
