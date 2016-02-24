@@ -157,22 +157,7 @@ def minimum_bounding_rectangle(points):
     """
 
     mbr = [0,0,0,0]
-    mbr = [None,None,None,None]
- +  for point in points:
- +       if mbr[0] is None:
- +            mbr[0] = point[0]
- +            mbr[1] = point[1]
- +            mbr[2] = point[0]
- +            mbr[3] = point[1]
- +       else:
- +            if point[0] < mbr[0]:
- +                mbr[0] = point[0]
- +            if point[1] < mbr[1]:
- +                mbr[1] = point[1]
- +            if point[0] > mbr[2]:
- +                mbr[2] = point[0]
- +            if point[1] > mbr[3]:
- +                mbr[3] = point[1]
+    
 
     return mbr
 
