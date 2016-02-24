@@ -1,5 +1,6 @@
 import math  # I am guessing that you will need to use the math module
 import json  # I would like you to use the JSON module for reading geojson (for now)
+
 """
 Like last assignment, we are going to be working with point
 patterns.  The readings focused on iteration, sequences, and
@@ -33,9 +34,9 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    with open(input_file,'r') as f:
+    with open(input_file, 'r') as f:
         gj = read_geojson(f)
-        
+
     return gj
 
 
@@ -85,11 +86,12 @@ def write_your_own(gj):
     city = None
 
     for i in gj['features']:
-       if i['properties']['pop_min'] < min_pop:
+        if i['properties']['pop_min'] < min_pop:
             min_pop = i['properties']['pop_min']
             city = i['properties']['name']
 
     return city, min_pop
+
 
 def mean_center(points):
     """
@@ -141,14 +143,14 @@ def average_nearest_neighbor_distance(points):
      p. 445-453.
     """
     List_distance = []
-    mean_d = sum(points)/len(points)
+    mean_d = 0
+    tot_mean = sum(points) / len(points)
 
-    for x_point,y_point in points:
-       d = euclidean_distance(x_point,y_point)
-       if d <= mean_d:
-          List_distance.append(d)
-
-    mean_d = sum(List_distance)/len(List_distance)
+    for x_point, y_point in points:
+        d = euclidean_distance(x_point, y_point)
+        if d <= tot_mean:
+            List_distance.append(d)
+            mean_d = sum(List_distance) / len(List_distance)
 
     return mean_d
 
@@ -168,11 +170,11 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    mbr = [0,0,0,0]
-    xmin = None
-    xmax = None
-    ymin = None
-    ymax = None
+    mbr = [0, 0, 0, 0]
+    xmin = 0
+    xmax = 0
+    ymin = 0
+    ymax = 0
 
     for p in points:
         if p[0] < xmin:
@@ -184,7 +186,7 @@ def minimum_bounding_rectangle(points):
         if p[1] > ymax:
             ymax = p[1]
 
-    mbr = [xmin,xmax,ymin,ymax]
+    mbr = [xmin, xmax, ymin, ymax]
 
     return mbr
 
@@ -196,7 +198,7 @@ def mbr_area(mbr):
     area = 0
     l = mbr[2] - mbr[0]
     w = mbr[3] - mbr[1]
-    area = l*w
+    area = l * w
 
     return area
 
@@ -221,7 +223,7 @@ def expected_distance(area, n):
         The number of points
     """
 
-    expected = 0.5 * (math.sqrt(area/n))
+    expected = 0.5 * (math.sqrt(area / n))
 
     return expected
 
@@ -233,6 +235,7 @@ but the functionality is identical.  No need to touch
 these unless you are interested in another way of solving
 the assignment
 """
+
 
 def manhattan_distance(a, b):
     """
@@ -251,7 +254,7 @@ def manhattan_distance(a, b):
     distance : float
                The Manhattan distance between the two points
     """
-    distance =  abs(a[0] - b[0]) + abs(a[1] - b[1])
+    distance = abs(a[0] - b[0]) + abs(a[1] - b[1])
     return distance
 
 
@@ -273,7 +276,7 @@ def euclidean_distance(a, b):
     distance : float
                The Euclidean distance between the two points
     """
-    distance = math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
+    distance = math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
     return distance
 
 
