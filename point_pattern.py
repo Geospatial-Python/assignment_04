@@ -33,9 +33,9 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-
-    gj = None
-    return gj
+with open('data/us_cities.geojson', 'r') as f:
+    gj = json.load(f)
+return gj
 
 
 def find_largest_city(gj):
@@ -57,12 +57,17 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
-    max_population = 0
+city = None
+max_population = 0
+temp = 0
 
+for i in gj:
+    if i['pop_max'] < temp:
+        temp = i['pop_max']
+        city = i['city']
+        max_population = temp
 
-
-    return city, max_population
+return city, max_population
 
 
 def write_your_own(gj):
