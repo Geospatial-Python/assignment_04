@@ -33,8 +33,10 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
-    return gj
+with open(input_file, 'r') as f:
+    gj = json.load(f)
+return gj
+print(gj)
 
 
 def find_largest_city(gj):
@@ -56,10 +58,17 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
-    max_population = 0
+city = None
+max_population = 0
+temp = 0
 
-    return city, max_population
+for i in gj:
+    if i['pop_max'] < temp:
+        temp = i['pop_max']
+        city = i['city']
+        max_population = temp
+
+return city, max_population
 
 
 def write_your_own(gj):
@@ -95,6 +104,12 @@ def mean_center(points):
     """
     x = None
     y = None
+    for point in points:
+        x += point[0]
+        y += point[1]
+
+    x = x/len(points)
+    y = y/len(points)
 
     return x, y
 
@@ -119,7 +134,9 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
+
     mean_d = 0
+   
 
     return mean_d
 
@@ -140,6 +157,7 @@ def minimum_bounding_rectangle(points):
     """
 
     mbr = [0,0,0,0]
+    
 
     return mbr
 
