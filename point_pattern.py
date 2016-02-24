@@ -33,7 +33,7 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-with open('data/us_cities.geojson', 'r') as f:
+with open(input_file, 'r') as f:
     gj = json.load(f)
 return gj
 
