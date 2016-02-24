@@ -33,7 +33,9 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file,'r') as f:
+        gj = read_geojson(f)
+        
     return gj
 
 
@@ -59,6 +61,11 @@ def find_largest_city(gj):
     city = None
     max_population = 0
 
+    for i in gj['features']:
+        if i['properties']['pop_max'] > max_population:
+            max_population = i['properties']['pop_max']
+            city = i['properties']['name']
+
     return city, max_population
 
 
@@ -74,7 +81,15 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    min_pop = 9999999
+    city = None
+
+    for i in gj['features']:
+       if i['properties']['pop_min'] < min_pop:
+            min_pop = i['properties']['pop_min']
+            city = i['properties']['name']
+
+    return city, min_pop
 
 def mean_center(points):
     """
@@ -95,6 +110,12 @@ def mean_center(points):
     """
     x = None
     y = None
+
+    for i in points:
+        x += i[0]
+        y += i[1]
+    x /= len(points)
+    y /= len(points)
 
     return x, y
 
@@ -119,7 +140,15 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
-    mean_d = 0
+    List_distance = []
+    mean_d = sum(points)/len(points)
+
+    for x_point,y_point in points:
+       d = euclidean_distance(x_point,y_point)
+       if d <= mean_d:
+          List_distance.append(d)
+
+    mean_d = sum(List_distance)/len(List_distance)
 
     return mean_d
 
@@ -140,6 +169,22 @@ def minimum_bounding_rectangle(points):
     """
 
     mbr = [0,0,0,0]
+    xmin = None
+    xmax = None
+    ymin = None
+    ymax = None
+
+    for p in points:
+        if p[0] < xmin:
+            xmin = p[0]
+        if p[0] > xmax:
+            xmax = p[0]
+        if p[1] < ymin:
+            ymin = p[1]
+        if p[1] > ymax:
+            ymax = p[1]
+
+    mbr = [xmin,xmax,ymin,ymax]
 
     return mbr
 
@@ -149,6 +194,9 @@ def mbr_area(mbr):
     Compute the area of a minimum bounding rectangle
     """
     area = 0
+    l = mbr[2] - mbr[0]
+    w = mbr[3] - mbr[1]
+    area = l*w
 
     return area
 
@@ -173,7 +221,8 @@ def expected_distance(area, n):
         The number of points
     """
 
-    expected = 0
+    expected = 0.5 * (math.sqrt(area/n))
+
     return expected
 
 
