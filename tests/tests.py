@@ -33,8 +33,8 @@ class TestFilesAndDicts(unittest.TestCase):
         point_pattern.py.
         """
         
-        self.assertTrue(city,"Montana" )
-        self.assertTrue(min_pop, 10)
+        some_return = point_pattern.write_your_own(self.gj)
+        self.assertTrue(some_return,"Montana" )
 
 class TestIterablePointPattern(unittest.TestCase):
     """
