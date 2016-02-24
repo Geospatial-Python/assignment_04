@@ -32,8 +32,8 @@ class TestFilesAndDicts(unittest.TestCase):
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        firstCity = point_pattern.write_your_own(self.gj)
+        self.assertEqual(firstCity, 'Glendale')
 
 class TestIterablePointPattern(unittest.TestCase):
     """
@@ -216,3 +216,4 @@ class TestPointPattern(unittest.TestCase):
 
         inlist = point_pattern.check_in((6,4), point_list)
         self.assertFalse(inlist)
+    
