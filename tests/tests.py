@@ -32,7 +32,7 @@ class TestFilesAndDicts(unittest.TestCase):
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        city, min_pop = point_pattern.write_your_own(self.gj)
+        
         self.assertTrue(city,"Montana" )
         self.assertTrue(min_pop, 10)
 
