@@ -33,7 +33,8 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file,'r') as jFile:
+        gj = json.load(jFile)
     return gj
 
 
@@ -56,8 +57,18 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
+
+    listOfFeatures = gj['features']
+
+    #city = None
+
     max_population = 0
+
+    for i in listOfFeatures:
+        popMax = i['properties']['pop_max']
+        if popMax > max_population:
+                max_population = popMax
+                city = i['properties']['name']
 
     return city, max_population
 
@@ -74,7 +85,16 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+
+    listOfFeatures2 = gj['features']
+
+    #going through the list and print the last entry of the city, population, and coordinates
+    for i in listOfFeatures2:
+        city = i['properties']['name']
+        population = i['properties']['pop_max']
+        coordinates = i['geometry']['coordinates']
+
+    return city, population, coordinates
 
 def mean_center(points):
     """
@@ -93,8 +113,17 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    #x = None
+    #y = None
+
+    x = [i[0] for i in points]
+    y = [i[1] for i in points]
+
+    sumX = (sum(x) / len(points))
+    sumY = (sum(y) / len(points))
+
+    x = sumX
+    y = sumY
 
     return x, y
 
@@ -121,6 +150,20 @@ def average_nearest_neighbor_distance(points):
     """
     mean_d = 0
 
+    shortDistanceList = []
+
+    for firstPoint in points:
+        pointInList = 500
+        for secondPoint in points:
+            if firstPoint is not secondPoint:
+                distance = euclidean_distance(firstPoint, secondPoint)
+                if (pointInList > distance):
+                    pointInList = distance
+
+        shortDistanceList.append(pointInList)
+
+    mean_d = sum(shortDistanceList) / len(points)
+
     return mean_d
 
 
@@ -141,6 +184,24 @@ def minimum_bounding_rectangle(points):
 
     mbr = [0,0,0,0]
 
+    xmin = 0
+    ymin = 0
+    xmax = 0
+    ymax = 0
+
+    for i in points:
+        if i[0] < xmin:
+            xmin = i[0]
+        if i[1] < ymin:
+            ymin = i[1]
+        if i[0] > xmax:
+            xmax = i[0]
+        if i[1] > ymax:
+            ymax = i[1]
+
+    mbr = [xmin,ymin,xmax,ymax]
+
+
     return mbr
 
 
@@ -149,6 +210,10 @@ def mbr_area(mbr):
     Compute the area of a minimum bounding rectangle
     """
     area = 0
+
+    length = mbr[3] - mbr[1]
+    width = mbr[2] - mbr [0]
+    area = length * width
 
     return area
 
@@ -174,6 +239,9 @@ def expected_distance(area, n):
     """
 
     expected = 0
+
+    expected = (math.sqrt(area/n)) * (0.5)
+
     return expected
 
 
