@@ -35,7 +35,7 @@ def read_geojson(input_file):
     # Please use the python json module (imported above)
     # to solve this one.
     with open(input_file, 'r') as f:
-        gj = read_geojson(f)
+        gj = json.load(f)
 
     return gj
 
@@ -110,18 +110,22 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
-
+    x = 0
+    y = 0
+    xx = 0
+    yy = 0
+    
     for i in points:
-        x += i[0]
-        y += i[1]
-    x /= len(points)
-    y /= len(points)
+        xx += i[0]
+        yy += i[1]
+
+    x = xx / len(points[0])
+    y = yy / len(points[1])
 
     return x, y
 
 
+# noinspection PyTypeChecker
 def average_nearest_neighbor_distance(points):
     """
     Given a set of points, compute the average nearest neighbor.
