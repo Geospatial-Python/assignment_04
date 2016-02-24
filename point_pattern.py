@@ -104,8 +104,8 @@ def mean_center(points):
     x = None
     y = None
     for point in points:
-        x += [0]
-        y += [1]
+        x += point[0]
+        y += point[1]
 
     x = x/len(points)
     y = y/len(points)
