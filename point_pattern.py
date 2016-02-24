@@ -146,15 +146,15 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
-    List_distance = []
+        list_distance = []
     mean_d = 0
     tot_mean = sum(points) / len(points)
 
     for x_point, y_point in points:
         d = euclidean_distance(x_point, y_point)
         if d <= tot_mean:
-            List_distance.append(d)
-            mean_d = sum(List_distance) / len(List_distance)
+            list_distance.append(d)
+            mean_d = sum(list_distance) / len(list_distance)
 
     return mean_d
 
