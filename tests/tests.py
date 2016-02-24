@@ -4,7 +4,6 @@ import sys
 import unittest
 
 sys.path.append(os.path.abspath('..'))
-
 from .. import point_pattern
 
 
@@ -17,7 +16,7 @@ class TestFilesAndDicts(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.gj = point_pattern.read_geojson('data/us_cities.geojson')
+        cls.gj = point_pattern.read_geojson('us_cities.geojson')
 
     def test_read_geojson(self):
         self.assertIsInstance(self.gj, dict)
@@ -33,7 +32,7 @@ class TestFilesAndDicts(unittest.TestCase):
         point_pattern.py.
         """
         some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        self.assertEqual(187,some_return)
 
 class TestIterablePointPattern(unittest.TestCase):
     """
