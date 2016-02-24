@@ -184,12 +184,12 @@ def minimum_bounding_rectangle(points):
         if p[0] < x_min:
             x_min = p[0]
         if p[0] > x_max:
-            x_max = p[1]
+            x_max = p[0]
         if p[1] < y_min:
-            y_min = p[0]
+            y_min = p[1]
         if p[1] > y_max:
             y_max = p[1]
-        mbr = [x_min, x_max, y_min, y_max]
+        mbr = [x_min, y_min, x_max, y_max]
 
     return mbr
 
