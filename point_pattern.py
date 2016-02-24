@@ -149,10 +149,13 @@ def average_nearest_neighbor_distance(points):
     mean_d = 0
     tot_mean = sum(points) / len(points)
 
-    for x_point, y_point in points:
-        d = euclidean_distance(x_point, y_point)
-        if d <= tot_mean:
-            list_distance.append(d)
+    for a in points:
+        d1 = euclidean_distance(x, y)
+        for b in points:
+            if a != b:
+                d2 = euclidean_distance(x, y)
+            if d1 <= d2:
+            list_distance.append(d1)
             mean_d = sum(list_distance) / len(points)
 
     return mean_d
