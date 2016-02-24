@@ -33,7 +33,8 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file, 'r') as f:
+        gj = json.load(f)
     return gj
 
 
@@ -56,8 +57,13 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
+    temp = gj['features']
+    city = ""
     max_population = 0
+    for n in temp:
+        if (n['properties']['pop_max'] > max_population):
+            max_population = n['properties']['pop_max']
+            city = n['properties']['name']
 
     return city, max_population
 
@@ -74,7 +80,15 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+
+    temp = gj['features']
+    citiesInArizona = [];
+    for n in temp:
+        if (n['properties']['adm1name'] == "Arizona"):
+            citiesInArizona.append(n['properties']['name'])
+
+    return citiesInArizona
+ 
 
 def mean_center(points):
     """
@@ -93,8 +107,15 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    xSum = 0
+    ySum = 0
+
+    for n in points:
+        xSum += n[0]
+        ySum += n[1]
+
+    x = xSum/len(points)
+    y = ySum/len(points)
 
     return x, y
 
@@ -119,7 +140,21 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
-    mean_d = 0
+    listOfDistances = []
+    
+    for n in points:
+        lowest = 100
+        for x in points:
+            if euclidean_distance(n,x)!= 0 and euclidean_distance(n,x) < lowest:
+                lowest = euclidean_distance(n,x)
+        listOfDistances.append(lowest)
+
+    totalOfDistances = 0
+
+    for z in listOfDistances:
+        totalOfDistances += z
+
+    mean_d = totalOfDistances/len(points)
 
     return mean_d
 
@@ -138,8 +173,22 @@ def minimum_bounding_rectangle(points):
      : list
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
+    minX = 100
+    minY = 100
+    maxX = 0
+    maxY = 0
 
-    mbr = [0,0,0,0]
+    for n in points:
+        if n[0] < minX:
+            minX = n[0]
+        if n[0] > maxX:
+            maxX = n[0]
+        if n[1] < minY:
+            minY = n[1]
+        if n[1] > maxY:
+            maxY = n[1]
+        
+    mbr = [minX,minY,maxX,maxY]
 
     return mbr
 
@@ -148,8 +197,13 @@ def mbr_area(mbr):
     """
     Compute the area of a minimum bounding rectangle
     """
+    
     area = 0
 
+    length = mbr[3]-mbr[1]
+    width = mbr[2] - mbr[0]
+
+    area = length * width
     return area
 
 
@@ -172,8 +226,10 @@ def expected_distance(area, n):
     n : int
         The number of points
     """
-
     expected = 0
+    expected = 0.5 * (math.sqrt(area/n))
+
+    
     return expected
 
 
