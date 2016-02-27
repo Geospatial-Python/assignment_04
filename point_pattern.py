@@ -1,5 +1,6 @@
 import math  # I am guessing that you will need to use the math module
 import json  # I would like you to use the JSON module for reading geojson (for now)
+
 """
 Like last assignment, we are going to be working with point
 patterns.  The readings focused on iteration, sequences, and
@@ -33,7 +34,8 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file, 'r') as f:
+        gj = json.load(f)
     return gj
 
 
@@ -58,9 +60,13 @@ def find_largest_city(gj):
     """
     city = None
     max_population = 0
+    for n in gj["features"]:
+        properties = n["properties"]
+        if (properties["pop_max"] > max_population):
+            max_population = properties["pop_max"]
+            city = properties["adm1name"]
 
     return city, max_population
-
 
 def write_your_own(gj):
     """
@@ -74,7 +80,17 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    # Find coordinates from Alaska
+    alaska_points = []
+    for n in gj["features"]:
+        properties = n["properties"]
+        state_name = properties["adm1name"]
+        if state_name == "Alaska":
+            alaska_points.append(n)
+        else:
+            continue
+
+    return alaska_points
 
 def mean_center(points):
     """
@@ -93,8 +109,17 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    x = 0
+    y = 0
+    number_of_points = 0
+
+    for p in points: 
+        x += p[0]
+        y += p[1]
+        number_of_points += 1
+
+    x = x / number_of_points
+    y = y / number_of_points
 
     return x, y
 
@@ -120,8 +145,25 @@ def average_nearest_neighbor_distance(points):
      p. 445-453.
     """
     mean_d = 0
+    temp_p = None
+    last_p = None
 
-    return mean_d
+    for p in points:
+        for neighbor in p:
+            
+            if p == neighbor:
+                continue
+            elif temp_p is None:
+                temp_p = euclidean_distance(p, neighbor)
+            elif temp_p > euclidean_distance(p, neighbor):
+                temp_p = euclidean_distance(p, neighbor)
+            else:
+                continue
+
+
+    mean_d = ((mean_d + temp_p) / len(points))
+
+    return mean_d 
 
 
 def minimum_bounding_rectangle(points):
@@ -139,7 +181,22 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    mbr = [0,0,0,0]
+    min_x = 1000000000
+    min_y = 1000000000
+    max_x = -1
+    max_y = -1
+
+    for n in points:
+        if n[0] < min_x:
+            min_x = n[0]
+        if n[0] > max_x:
+            max_x = n[0]
+        if n[1] < min_y:
+            min_y = n[1]
+        if n[1] > max_y:
+            max_y = n[1]
+        
+    mbr = [min_x, min_y, max_x, max_y]
 
     return mbr
 
@@ -148,7 +205,7 @@ def mbr_area(mbr):
     """
     Compute the area of a minimum bounding rectangle
     """
-    area = 0
+    area = ((mbr[2] - mbr[0]) * (mbr[3] - mbr[1]))
 
     return area
 
@@ -173,7 +230,7 @@ def expected_distance(area, n):
         The number of points
     """
 
-    expected = 0
+    expected = (0.5 * (math.sqrt(area/n)))
     return expected
 
 

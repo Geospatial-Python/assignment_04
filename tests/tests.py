@@ -17,6 +17,8 @@ class TestFilesAndDicts(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        # REMINDER: Trying to finish my tests but the computer I'm on now can't find this file for some reason
+        # Why is that...
         cls.gj = point_pattern.read_geojson('data/us_cities.geojson')
 
     def test_read_geojson(self):
@@ -216,3 +218,9 @@ class TestPointPattern(unittest.TestCase):
 
         inlist = point_pattern.check_in((6,4), point_list)
         self.assertFalse(inlist)
+
+
+    def test_alaska_points(self):
+        gj = point_pattern.read_geojson('data/us_cities.geojson')
+        alaska_points = point_pattern.write_your_own(gj)
+        self.assertTrue(alaska_points[0]["properties"]["adm1name"] == 'Alaska')
