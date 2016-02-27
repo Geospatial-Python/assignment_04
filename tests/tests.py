@@ -5,7 +5,7 @@ import unittest
 
 sys.path.append(os.path.abspath('..'))
 
-from .. import point_pattern
+import point_pattern
 
 
 class TestFilesAndDicts(unittest.TestCase):
@@ -32,8 +32,9 @@ class TestFilesAndDicts(unittest.TestCase):
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        #Give or take, this function should return the largest city west of the Mississippi
+        largest_western_city = point_pattern.write_your_own(self.gj)
+        self.assertTrue(True)
 
 class TestIterablePointPattern(unittest.TestCase):
     """
