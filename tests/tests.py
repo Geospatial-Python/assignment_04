@@ -35,7 +35,7 @@ class TestFilesAndDicts(unittest.TestCase):
         point_pattern.py.
         """
         some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        self.assertEqual(some_return[0]["properties"]["adm1name"],"Alaska")
 
 class TestIterablePointPattern(unittest.TestCase):
     """
