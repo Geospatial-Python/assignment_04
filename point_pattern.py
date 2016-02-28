@@ -85,7 +85,7 @@ def write_your_own(gj):
     unitedstates = 0
 
     for i in location:
-        if i['properties']['United States of America'] == 1:
+        if i['properties']['adm0name'] == 'United States of America':
             unitedstates += 1
     return unitedstates
 
