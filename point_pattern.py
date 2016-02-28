@@ -82,12 +82,12 @@ def write_your_own(gj):
     tests.py!
     """
     location = gj['features']
-    UnitedStates = 0
+    unitedstates = 0
 
     for i in location:
-        if i['properties']['United States'] == 1:
-            UnitedStates += 1
-    return UnitedStates
+        if i['properties']['United States of America'] == 1:
+            unitedstates += 1
+    return unitedstates
 
 def mean_center(points):
     """
