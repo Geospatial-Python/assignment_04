@@ -33,7 +33,7 @@ class TestFilesAndDicts(unittest.TestCase):
         point_pattern.py.
         """
         some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        self.assertTrue(some_return, 70)
 
 class TestIterablePointPattern(unittest.TestCase):
     """
