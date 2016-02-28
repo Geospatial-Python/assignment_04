@@ -167,11 +167,11 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    first = true
+    i = True
     mbr = [0,0,0,0]
     for point in points:
-         if first:
-             first = False
+         if i:
+             i = False
              mbr[0] = point[0]
              mbr[1] = point[1]
              mbr[2] = point[0]
