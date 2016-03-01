@@ -33,9 +33,9 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file, 'r') as f:
+        gj = json.load(f)
     return gj
-
 
 def find_largest_city(gj):
     """
@@ -56,8 +56,19 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
-    max_population = 0
+    list_cities = []
+    list_pop = []
+
+    for d in kj['features']:
+        pop_max = d['properties']['pop_max']
+        citys = d['properties']['ls_name']
+        list_cities.append(citys)
+        list_pop.append(pop_max)
+
+    max_population = max(list_pop)
+    index_pop = list_pop.index(max_population)
+
+    city = list_cities[index_pop]
 
     return city, max_population
 
@@ -74,7 +85,22 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    list_cities2 = []
+    home_state = []
+
+    for s in gj['features']:
+        citys2 = s['properties']['ls_name']
+        statenm = s['properties']['adm1name']
+        list_cities2.append(citys2)
+        home_state.append(statenm)
+
+    v = raw_input('Type a city name to return its state...')
+    citynumber = list_cities2.index(v)
+    stateans = home_state[citynumber]
+
+    return stateans
+
+
 
 def mean_center(points):
     """
@@ -93,10 +119,17 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    x = 0
+    y = 0
+    for coor in points:
+        x += coor[0]
+        y += coor[1]
 
     return x, y
+
+sub = [(1,2), (3,4)]
+print mean_center(sub)
+
 
 
 def average_nearest_neighbor_distance(points):
