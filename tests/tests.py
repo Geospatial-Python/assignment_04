@@ -27,13 +27,14 @@ class TestFilesAndDicts(unittest.TestCase):
         self.assertEqual(city, 'New York')
         self.assertEqual(pop, 19040000)
 
-    def test_write_your_own(self):
+    def test_highest_latitude(self):
         """
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        city, latHigh = point_pattern.highest_latitude(self.gj)
+        self.assertEqual(city, 'Barrow')
+        self.assertEqual(latHigh, 71.29057)
 
 class TestIterablePointPattern(unittest.TestCase):
     """
