@@ -1,5 +1,6 @@
 import math  # I am guessing that you will need to use the math module
 import json  # I would like you to use the JSON module for reading geojson (for now)
+from urllib.request import urlopen
 
 """
 Like last assignment, we are going to be working with point
@@ -34,8 +35,13 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    with open(input_file, 'r') as f:
-        gj = json.load(f)
+    # with open(input_file, 'r') as f:
+        # gj = json.load(f) 
+
+    response = urlopen("https://api.myjson.com/bins/4587l").read().decode('utf8')
+    gj = json.loads(response)
+    print(gj)
+
     return gj
 
 
@@ -144,26 +150,24 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
-    mean_d = 0
+
+    mean_d = 0 
     temp_p = None
-    last_p = None
-
-    for p in points:
-        for neighbor in p:
-            
-            if p == neighbor:
+    for p in points: 
+        for q in points: 
+            if check_coincident(p, q):
                 continue
-            elif temp_p is None:
-                temp_p = euclidean_distance(p, neighbor)
-            elif temp_p > euclidean_distance(p, neighbor):
-                temp_p = euclidean_distance(p, neighbor)
-            else:
-                continue
+            cached = euclidean_distance(p, q)
+            if temp_p is None: 
+                temp_p = cached
+            elif temp_p > cached:
+                temp_p = cached
 
+        mean_d += temp_p 
+        temp_p = None
 
-    mean_d = ((mean_d + temp_p) / len(points))
+    return mean_d / len(points)
 
-    return mean_d 
 
 
 def minimum_bounding_rectangle(points):
