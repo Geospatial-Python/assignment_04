@@ -145,7 +145,7 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
-        list_distance = []
+    list_distance = []
     mean_d = 0
     c = 0
 
