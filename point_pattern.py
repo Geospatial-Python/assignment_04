@@ -148,15 +148,17 @@ def average_nearest_neighbor_distance(points):
     list_distance = []
     mean_d = 0
     c = 0
+    t = 999999
 
-    for a in enumerate(points):
-        for b in enumerate(points):
-            if check_coincident(a, b):
-                c = euclidean_distance(a, b)
-        
-        if c < b:
+    for p1 in enumerate(points):
+        for p2 in enumerate(points):
+            if check_coincident(p1, p2):
+                continue
+                c = euclidean_distance(p1, p2)
+
+        if c < t:
             list_distance.append(c)
-
+        
         mean_d = sum(list_distance) / len(points)
 
     return mean_d
