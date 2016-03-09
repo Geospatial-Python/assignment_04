@@ -150,18 +150,19 @@ def average_nearest_neighbor_distance(points):
     c = 0
     t = 999999
 
-    for p1 in enumerate(points):
-        for p2 in enumerate(points):
-            if check_coincident(p1, p2):
+    for point1 in enumerate(points):
+        for point2 in enumerate(points):
+            if check_coincident(point1, point2):
                 continue
-                c = euclidean_distance(p1, p2)
+                c = euclidean_distance(point1, point2)
+                if c < t:
+                    list_distance.append(c)
+                    c==t
 
-        if c < t:
-            list_distance.append(c)
-        
         mean_d = sum(list_distance) / len(points)
 
     return mean_d
+
 
 
 def minimum_bounding_rectangle(points):
