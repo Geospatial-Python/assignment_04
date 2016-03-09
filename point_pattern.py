@@ -162,6 +162,8 @@ def average_nearest_neighbor_distance(points):
         nearest_neighbor = None
 
     mean_d /= len(points)
+    
+    return mean_d
 
 
 
