@@ -1,5 +1,6 @@
 import math  # I am guessing that you will need to use the math module
 import json  # I would like you to use the JSON module for reading geojson (for now)
+
 """
 Like last assignment, we are going to be working with point
 patterns.  The readings focused on iteration, sequences, and
@@ -33,7 +34,9 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file, 'r') as f:
+        gj = json.load(f)
+
     return gj
 
 
@@ -59,6 +62,11 @@ def find_largest_city(gj):
     city = None
     max_population = 0
 
+    for i in gj['features']:
+        if i['properties']['pop_max'] > max_population:
+            max_population = i['properties']['pop_max']
+            city = i['properties']['name']
+
     return city, max_population
 
 
@@ -74,7 +82,16 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    min_pop = 9999999
+    city = None
+
+    for i in gj['features']:
+        if i['properties']['pop_min'] < min_pop:
+            min_pop = i['properties']['pop_min']
+            city = i['properties']['name']
+
+    return city, min_pop
+
 
 def mean_center(points):
     """
@@ -93,12 +110,21 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    x = 0
+    y = 0
+    xx = 0
+    yy = 0
+
+    for i in points:
+        xx += i[0]
+        yy += i[1]
+        x = xx / len(points)
+        y = yy / len(points)
 
     return x, y
 
 
+# noinspection PyTypeChecker
 def average_nearest_neighbor_distance(points):
     """
     Given a set of points, compute the average nearest neighbor.
@@ -120,8 +146,25 @@ def average_nearest_neighbor_distance(points):
      p. 445-453.
     """
     mean_d = 0
+    nearest_neighbor = None
 
+    for point1 in points:
+        for point2 in points:
+            if check_coincident(point1, point2):
+                continue
+            current_distance = euclidean_distance(point1, point2)
+            if nearest_neighbor is None:
+                nearest_neighbor = current_distance
+            elif nearest_neighbor > current_distance:
+                nearest_neighbor = current_distance
+
+        mean_d += nearest_neighbor
+        nearest_neighbor = None
+
+    mean_d /= len(points)
+    
     return mean_d
+
 
 
 def minimum_bounding_rectangle(points):
@@ -139,7 +182,22 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    mbr = [0,0,0,0]
+    mbr = [0, 0, 0, 0]
+    x_min = 0
+    x_max = 0
+    y_min = 0
+    y_max = 0
+
+    for p in points:
+        if p[0] < x_min:
+            x_min = p[0]
+        if p[0] > x_max:
+            x_max = p[0]
+        if p[1] < y_min:
+            y_min = p[1]
+        if p[1] > y_max:
+            y_max = p[1]
+        mbr = [x_min, y_min, x_max, y_max]
 
     return mbr
 
@@ -149,6 +207,9 @@ def mbr_area(mbr):
     Compute the area of a minimum bounding rectangle
     """
     area = 0
+    l = mbr[2] - mbr[0]
+    w = mbr[3] - mbr[1]
+    area = l * w
 
     return area
 
@@ -173,7 +234,8 @@ def expected_distance(area, n):
         The number of points
     """
 
-    expected = 0
+    expected = 0.5 * (math.sqrt(area / n))
+
     return expected
 
 
@@ -184,6 +246,7 @@ but the functionality is identical.  No need to touch
 these unless you are interested in another way of solving
 the assignment
 """
+
 
 def manhattan_distance(a, b):
     """
@@ -202,7 +265,7 @@ def manhattan_distance(a, b):
     distance : float
                The Manhattan distance between the two points
     """
-    distance =  abs(a[0] - b[0]) + abs(a[1] - b[1])
+    distance = abs(a[0] - b[0]) + abs(a[1] - b[1])
     return distance
 
 
@@ -224,7 +287,7 @@ def euclidean_distance(a, b):
     distance : float
                The Euclidean distance between the two points
     """
-    distance = math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
+    distance = math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
     return distance
 
 
