@@ -122,17 +122,18 @@ def mean_center(points):
     x = 0
     y = 0
     for coor in points:
-        x += coor[0]
-        y += coor[1]
+        x += coor[0]/len(points)
+        y += coor[1]/len(points)
 
     return x, y
 
 sub = [(1,2), (3,4)]
-print mean_center(sub)
+print (mean_center(sub))
 
 
 
 def average_nearest_neighbor_distance(points):
+
     """
     Given a set of points, compute the average nearest neighbor.
 
