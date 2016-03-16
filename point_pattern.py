@@ -128,8 +128,6 @@ def mean_center(points):
     return x, y
 
 sub = [(1,2), (3,4)]
-print (mean_center(sub))
-
 
 
 def average_nearest_neighbor_distance(points):
@@ -153,10 +151,19 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
+    shortest_path = []
     mean_d = 0
 
-    return mean_d
+    for p_one in points:
+        distance = []
+        for p_two in points:
+            if math.sqrt((p_one[0] - p_two[0])**2 + (p_one[1] - p_two[1])**2)==0:
+                continue
+            distance.append(math.sqrt((p_one[0] - p_two[0])**2 + (p_one[1] - p_two[1])**2))
+        shortest_path.append(min(distance))
 
+    mean_d = sum(shortest_path)/len(shortest_path)
+    return mean_d
 
 def minimum_bounding_rectangle(points):
     """
@@ -173,7 +180,18 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    mbr = [0,0,0,0]
+    mbr = []
+    x_list = []
+    y_list = []
+
+    for point in points:
+        x_list.append(point[0])
+        y_list.append(point[1])
+
+    mbr.append(min(x_list))
+    mbr.append(min(y_list))
+    mbr.append(max(x_list))
+    mbr.append(max(y_list))
 
     return mbr
 
@@ -183,6 +201,11 @@ def mbr_area(mbr):
     Compute the area of a minimum bounding rectangle
     """
     area = 0
+
+    length = abs(mbr[0] - mbr[2])
+    width = abs(mbr[1] - mbr[3])
+
+    area = length * width
 
     return area
 
@@ -208,6 +231,8 @@ def expected_distance(area, n):
     """
 
     expected = 0
+
+    expected = 0.5 * (math.sqrt(area / n))
     return expected
 
 
