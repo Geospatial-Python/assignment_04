@@ -31,9 +31,12 @@ class TestFilesAndDicts(unittest.TestCase):
         """
         Here you will write a test for the code you write in
         point_pattern.py.
+
+        Teagan: how would I test a function that used user input?
         """
         some_return = point_pattern.write_your_own(self.gj)
         self.assertTrue(False)
+
 
 class TestIterablePointPattern(unittest.TestCase):
     """
@@ -41,13 +44,14 @@ class TestIterablePointPattern(unittest.TestCase):
     passing, you will have the foundation of some point pattern analysis
     functionality.
     """
+
     # This is like the standard setup, except it is only called once
     @classmethod
     def setUpClass(cls):
         # Seed a random number generator so we get the same random values every time
         random.seed(12345)
         # A list comprehension to create 50 random points
-        cls.points = [(random.randint(0,100), random.randint(0,100)) for i in range(50)]
+        cls.points = [(random.randint(0, 100), random.randint(0, 100)) for i in range(50)]
 
     def test_average_nearest_neighbor_distance(self):
         mean_d = point_pattern.average_nearest_neighbor_distance(self.points)
@@ -65,10 +69,10 @@ class TestIterablePointPattern(unittest.TestCase):
 
     def test_minimum_bounding_rectangle(self):
         mbr = point_pattern.minimum_bounding_rectangle(self.points)
-        self.assertEqual(mbr, [0,0,94,98])
+        self.assertEqual(mbr, [0, 0, 94, 98])
 
     def test_mbr_area(self):
-        mbr = [0,0,94,98]
+        mbr = [0, 0, 94, 98]
         area = point_pattern.mbr_area(mbr)
         self.assertEqual(area, 9212)
 
@@ -84,6 +88,7 @@ class TestPointPattern(unittest.TestCase):
     These are the tests that you got working in assignment 3.
     You should not need to alter these at all.
     """
+
     def setUp(self):
         pass
 
@@ -97,7 +102,7 @@ class TestPointPattern(unittest.TestCase):
         `getx` function so that the correct
         values are returned.
         """
-        point = (1,2)
+        point = (1, 2)
         x = point_pattern.getx(point)
         self.assertEqual(1, x)
 
@@ -110,7 +115,7 @@ class TestPointPattern(unittest.TestCase):
         `gety` function so that the correct
         values are returned.
         """
-        point = (3,2.5)
+        point = (3, 2.5)
         y = point_pattern.gety(point)
         self.assertEqual(2.5, y)
 
@@ -119,13 +124,13 @@ class TestPointPattern(unittest.TestCase):
         Test that a point is being properly shifted
          when calling point_pattern.shift_point
         """
-        point = (0,0)
+        point = (0, 0)
         new_point = point_pattern.shift_point(point, 3, 4)
-        self.assertEqual((3,4), new_point)
+        self.assertEqual((3, 4), new_point)
 
         point = (-2.34, 1.19)
         new_point = point_pattern.shift_point(point, 2.34, -1.19)
-        self.assertEqual((0,0), new_point)
+        self.assertEqual((0, 0), new_point)
 
     def test_euclidean_distance(self):
         """
@@ -208,11 +213,11 @@ class TestPointPattern(unittest.TestCase):
         """
         As above, update the function in point_pattern.py
         """
-        point_list = [(0,0), (1,0.1), (-2.1, 1),
-                      (2,4), (1,1), (3.5, 2)]
+        point_list = [(0, 0), (1, 0.1), (-2.1, 1),
+                      (2, 4), (1, 1), (3.5, 2)]
 
-        inlist = point_pattern.check_in((0,0), point_list)
+        inlist = point_pattern.check_in((0, 0), point_list)
         self.assertTrue(inlist)
 
-        inlist = point_pattern.check_in((6,4), point_list)
+        inlist = point_pattern.check_in((6, 4), point_list)
         self.assertFalse(inlist)

@@ -33,9 +33,9 @@ def read_geojson(input_file):
     """
     # Please use the python json module (imported above)
     # to solve this one.
-    gj = None
+    with open(input_file, 'r') as f:
+        gj = json.load(f)
     return gj
-
 
 def find_largest_city(gj):
     """
@@ -56,8 +56,19 @@ def find_largest_city(gj):
     population : int
                  The population of the largest city
     """
-    city = None
-    max_population = 0
+    list_cities = []
+    list_pop = []
+
+    for d in kj['features']:
+        pop_max = d['properties']['pop_max']
+        citys = d['properties']['ls_name']
+        list_cities.append(citys)
+        list_pop.append(pop_max)
+
+    max_population = max(list_pop)
+    index_pop = list_pop.index(max_population)
+
+    city = list_cities[index_pop]
 
     return city, max_population
 
@@ -74,7 +85,22 @@ def write_your_own(gj):
     Do not forget to write the accompanying test in
     tests.py!
     """
-    return
+    list_cities2 = []
+    home_state = []
+
+    for s in gj['features']:
+        citys2 = s['properties']['ls_name']
+        statenm = s['properties']['adm1name']
+        list_cities2.append(citys2)
+        home_state.append(statenm)
+
+    v = raw_input('Type a city name to return its state...')
+    citynumber = list_cities2.index(v)
+    stateans = home_state[citynumber]
+
+    return stateans
+
+
 
 def mean_center(points):
     """
@@ -93,13 +119,19 @@ def mean_center(points):
     y : float
         Mean y coordinate
     """
-    x = None
-    y = None
+    x = 0
+    y = 0
+    for coor in points:
+        x += coor[0]/len(points)
+        y += coor[1]/len(points)
 
     return x, y
 
+sub = [(1,2), (3,4)]
+
 
 def average_nearest_neighbor_distance(points):
+
     """
     Given a set of points, compute the average nearest neighbor.
 
@@ -119,10 +151,19 @@ def average_nearest_neighbor_distance(points):
      Measure of Spatial Relationships in Populations. Ecology. 35(4)
      p. 445-453.
     """
+    shortest_path = []
     mean_d = 0
 
-    return mean_d
+    for p_one in points:
+        distance = []
+        for p_two in points:
+            if math.sqrt((p_one[0] - p_two[0])**2 + (p_one[1] - p_two[1])**2)==0:
+                continue
+            distance.append(math.sqrt((p_one[0] - p_two[0])**2 + (p_one[1] - p_two[1])**2))
+        shortest_path.append(min(distance))
 
+    mean_d = sum(shortest_path)/len(shortest_path)
+    return mean_d
 
 def minimum_bounding_rectangle(points):
     """
@@ -139,7 +180,18 @@ def minimum_bounding_rectangle(points):
        Corners of the MBR in the form [xmin, ymin, xmax, ymax]
     """
 
-    mbr = [0,0,0,0]
+    mbr = []
+    x_list = []
+    y_list = []
+
+    for point in points:
+        x_list.append(point[0])
+        y_list.append(point[1])
+
+    mbr.append(min(x_list))
+    mbr.append(min(y_list))
+    mbr.append(max(x_list))
+    mbr.append(max(y_list))
 
     return mbr
 
@@ -149,6 +201,11 @@ def mbr_area(mbr):
     Compute the area of a minimum bounding rectangle
     """
     area = 0
+
+    length = abs(mbr[0] - mbr[2])
+    width = abs(mbr[1] - mbr[3])
+
+    area = length * width
 
     return area
 
@@ -174,6 +231,8 @@ def expected_distance(area, n):
     """
 
     expected = 0
+
+    expected = 0.5 * (math.sqrt(area / n))
     return expected
 
 
