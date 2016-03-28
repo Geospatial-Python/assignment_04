@@ -34,6 +34,9 @@ def read_geojson(input_file):
     # Please use the python json module (imported above)
     # to solve this one.
     gj = None
+    fp = open(input_file, 'r')
+    gj = json.loads(fp.read())
+    fp.close()
     return gj
 
 
@@ -58,6 +61,10 @@ def find_largest_city(gj):
     """
     city = None
     max_population = 0
+    for feature in gj["features"]:
+        if feature["properties"]["pop_max"]>max_population:
+            max_population=feature["properties"]["pop_max"]
+            city=feature["properties"]["nameascii"]
 
     return city, max_population
 
@@ -73,8 +80,20 @@ def write_your_own(gj):
 
     Do not forget to write the accompanying test in
     tests.py!
+
+    To find the average of pop_max and pop_min.
+
     """
-    return
+
+    sum_pop_max=0
+    sum_pop_min=0
+    num=0
+    for feature in gj["features"]:
+        sum_pop_max+=feature["properties"]["pop_max"]
+        sum_pop_min+=feature["properties"]["pop_min"]
+        num+=1
+
+    return float(sum_pop_max/num),float(sum_pop_min/num)
 
 def mean_center(points):
     """
@@ -95,6 +114,14 @@ def mean_center(points):
     """
     x = None
     y = None
+    sum_x=[]
+    sum_y=[]
+    for x_tmp,y_tmp in points:
+        sum_x.append(x_tmp)
+        sum_y.append(y_tmp)
+
+    x=float(sum(sum_x)/len(sum_x))
+    y=float(sum(sum_y)/len(sum_y))
 
     return x, y
 
@@ -120,7 +147,17 @@ def average_nearest_neighbor_distance(points):
      p. 445-453.
     """
     mean_d = 0
+    nearest_distances=[]
+    for point_i in points:
+        distance=[]
+        for point_j in points:
+            if point_i==point_j:
+                continue
+            else:
+                distance.append(euclidean_distance(point_i,point_j))
+        nearest_distances.append(min(distance))
 
+    mean_d=float(sum(nearest_distances)/len(nearest_distances))
     return mean_d
 
 
@@ -141,6 +178,13 @@ def minimum_bounding_rectangle(points):
 
     mbr = [0,0,0,0]
 
+    x_list=[]
+    y_list=[]
+    for x,y in points:
+        x_list.append(x)
+        y_list.append(y)
+    mbr=[min(x_list),min(y_list),max(x_list),max(y_list)]
+
     return mbr
 
 
@@ -149,7 +193,7 @@ def mbr_area(mbr):
     Compute the area of a minimum bounding rectangle
     """
     area = 0
-
+    area=(mbr[2]-mbr[0])*(mbr[3]-mbr[1])
     return area
 
 
@@ -174,6 +218,7 @@ def expected_distance(area, n):
     """
 
     expected = 0
+    expected =float((math.sqrt(area/n))/2)
     return expected
 
 
