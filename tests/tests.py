@@ -32,8 +32,9 @@ class TestFilesAndDicts(unittest.TestCase):
         Here you will write a test for the code you write in
         point_pattern.py.
         """
-        some_return = point_pattern.write_your_own(self.gj)
-        self.assertTrue(False)
+        avg_pop_max,avg_pop_min = point_pattern.write_your_own(self.gj)
+        self.assertTrue(avg_pop_max,308473.3217503218)
+        self.assertTrue(avg_pop_min,115237.50321750322)
 
 class TestIterablePointPattern(unittest.TestCase):
     """
